@@ -1,6 +1,6 @@
 # BackgroundTimer
 
-Background timer for SwiftUI.
+Background timer that works without background modes.
 
 ![](./demo.png)
 
