@@ -16,21 +16,26 @@ struct ContentView: View {
     // MARK: - Body
     
     var body: some View {
-        VStack(spacing: 24) {
-            Text("\(backgroundTimer.timeRemaining)")
-                .font(.title)
-                .foregroundStyle(.red)
+        ZStack {
+            Color.snow
+                .ignoresSafeArea()
             
-            Button("Stop") {
-                backgroundTimer.stop()
-            }
-            
-            Button("Resume") {
-                backgroundTimer.resume()
-            }
-            
-            Button("Restart") {
-                startTimer()
+            VStack(spacing: 24) {
+                Text("\(backgroundTimer.timeRemaining)")
+                    .font(.title)
+                    .foregroundStyle(.red)
+                
+                Button("Stop") {
+                    backgroundTimer.stop()
+                }
+                
+                Button("Resume") {
+                    backgroundTimer.resume()
+                }
+                
+                Button("Restart") {
+                    startTimer()
+                }
             }
         }
         .onAppear {
