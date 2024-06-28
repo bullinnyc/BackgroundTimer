@@ -79,16 +79,19 @@ final class BackgroundTimer: ObservableObject {
     
     private func updateRemainingTime() {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self,
-                  self.timeRemaining > .zero,
-                  self.backgroundDate == nil
-            else { return }
+            guard let self = self, self.backgroundDate == nil else { return }
             
-            if self.differenceSeconds != .zero {
-                self.timeRemaining -= self.differenceSeconds
-                self.differenceSeconds = .zero
-            } else {
+            switch self.differenceSeconds {
+            case .zero where self.timeRemaining > .zero:
                 self.timeRemaining -= 1
+            default:
+                if self.timeRemaining >= self.differenceSeconds {
+                    self.timeRemaining -= self.differenceSeconds
+                } else {
+                    self.timeRemaining = .zero
+                }
+                
+                self.differenceSeconds = .zero
             }
             
             if self.timeRemaining == .zero {
@@ -106,12 +109,7 @@ final class BackgroundTimer: ObservableObject {
             to: Date()
         ).second ?? .zero
         
-        if timeRemaining > differenceSeconds {
-            self.differenceSeconds = UInt(differenceSeconds)
-        } else {
-            timeRemaining = .zero
-        }
-        
+        self.differenceSeconds = UInt(differenceSeconds)
         setBackgroundDate(with: nil)
     }
     
